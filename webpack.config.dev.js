@@ -2,6 +2,7 @@ const copyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const Dotenv = require('dotenv-webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require("path"); //Trabaja con archivo y rutas de directorios
 
 module.exports = {
@@ -14,6 +15,7 @@ module.exports = {
     filename: "[name].[contenthash].js", //archivo final
     assetModuleFilename: 'assets/images/[hash][ext][query]'
   },
+  devtool: 'source-map',
   resolve: {
     extensions: [".js"], //archivos que webpack va a leer
     alias: {
@@ -89,6 +91,13 @@ module.exports = {
         },
       ],
     }),
-    new Dotenv(),//instanciamos el plugin
+    new Dotenv(),
+    new BundleAnalyzerPlugin()//instanciamos el plugin
   ],
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    historyApiFallback: true,
+    port: 3000,
+  }
 };
